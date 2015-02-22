@@ -1,3 +1,7 @@
 Meteor.startup(function () {
-    // code to run on server at startup
+    console.log(Meteor.settings.postgres);
+});
+
+Router.route('/api/getPeople', function() {
+    console.log("Get REQUEST!!!");
 });
