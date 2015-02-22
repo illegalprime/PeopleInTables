@@ -14,6 +14,26 @@ if (Meteor.isClient) {
       Session.set('counter', Session.get('counter') + 1);
     }
   });
+
+    Template.peopleTable.helpers({
+        people: function() {
+            return {
+                headers: ['Hello', 'World'],
+                data: [['Mark', 'hello']]
+            };
+        }
+    });
+
+    var onResize = function() {
+        $('#background').height($(window).height() - $('#background').offset().top);
+    };
+
+    $(document).ready(function() {
+        $('#people').DataTable();
+        onResize();
+    });
+
+    $(window).resize(onResize);
 }
 
 if (Meteor.isServer) {

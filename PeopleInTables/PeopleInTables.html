@@ -1,14 +1,50 @@
 <head>
-  <title>PeopleInTables</title>
+    <title>PeopleInTables</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css" /> -->
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css" />
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
+  <h1>Welcome to People-In-Tables!</h1>
+  <div id="table">
+      {{> peopleTable}}
+  </div>
+  <div id="background"></div>
 </body>
 
 <template name="hello">
   <button>Click Me</button>
   <p>You've pressed the button {{counter}} times.</p>
+</template>
+
+<template name="peopleTable">
+    <table id="people" class="table table-striped table-bordered" cellspacing="0">
+        <thead>
+            <tr>
+                {{#each people.headers}}
+                    <th>{{this}}</th>
+                {{/each}}
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                {{#each people.headers}}
+                    <th>{{this}}</th>
+                {{/each}}
+            </tr>
+        </tfoot>
+        <tbody>
+            {{#each people.data}}
+                <tr>
+                    {{#each this}}
+                        <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
 </template>

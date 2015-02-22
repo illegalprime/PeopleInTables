@@ -1,1 +1,27 @@
 /* CSS declarations go here */
+body {
+    font-size: 140%;
+    position: relative;
+    top: 100px;
+}
+
+#background {
+    background-image: url("simpsons.jpg");
+    width: 100%;
+    height: 400px;
+    background-position: center 0px;
+    bottom: 0px;
+}
+
+h1 {
+    text-align: center;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+#table {
+    padding: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
