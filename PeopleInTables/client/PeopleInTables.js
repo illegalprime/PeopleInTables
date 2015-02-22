@@ -16,13 +16,13 @@ $(document).ready(function() {
     $('#people').dataTable({
         "processing": true,
         "serverSide": true,
+        "drawCallback": onResize,
         "ajax": function(data, callback) {
             Meteor.call("getPeople", data, function(error, result) {
                 callback(result);
             });
         }
     });
-    onResize();
 });
 
 $(window).resize(onResize);
