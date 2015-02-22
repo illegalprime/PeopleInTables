@@ -1,9 +1,10 @@
-Template.peopleTable.helpers({
-    people: function() {
-        return {
-            headers: ['Hello', 'World'],
-            data: [['Mark', 'hello']]
-        };
+Meteor.call('getHeaders', function(error, result) {
+    Session.set('headers', result);
+});
+
+Template.headerRow.helpers({
+    headers: function() {
+        return Session.get('headers');
     }
 });
 
@@ -15,7 +16,11 @@ $(document).ready(function() {
     $('#people').dataTable({
         "processing": true,
         "serverSide": true,
-        "ajax": "/api/getPeople"
+        "ajax": function(data, callback) {
+            Meteor.call("getPeople", data, function(error, result) {
+                callback(result);
+            });
+        }
     });
     onResize();
 });
