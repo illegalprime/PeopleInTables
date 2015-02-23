@@ -1,5 +1,4 @@
 Meteor.call('getHeaders', function(error, result) {
-    console.log(result);
     Session.set('headers', result);
 
     $('#people').dataTable({
@@ -25,9 +24,6 @@ var onResize = function() {
 };
 
 $(document).ready(function() {
-    Meteor.call('getSize', function(error, result) {
-        console.log("SIZE CALL: " + JSON.stringify(result));
-    });
 });
 
 $(window).resize(onResize);
