@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "fibers": {
+      "version": "1.0.5"
+    },
     "pg": {
       "version": "4.3.0",
       "dependencies": {
@@ -33,6 +36,14 @@
         },
         "semver": {
           "version": "4.3.0"
+        }
+      }
+    },
+    "promise": {
+      "version": "6.1.0",
+      "dependencies": {
+        "asap": {
+          "version": "1.0.0"
         }
       }
     },

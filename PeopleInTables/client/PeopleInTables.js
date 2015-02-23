@@ -1,5 +1,17 @@
 Meteor.call('getHeaders', function(error, result) {
+    console.log(result);
     Session.set('headers', result);
+
+    $('#people').dataTable({
+        "processing": true,
+        "serverSide": true,
+        "drawCallback": onResize,
+        "ajax": function(data, callback) {
+            Meteor.call("getPeople", data, function(error, result) {
+                callback(result);
+            });
+        }
+    });
 });
 
 Template.headerRow.helpers({
@@ -13,15 +25,8 @@ var onResize = function() {
 };
 
 $(document).ready(function() {
-    $('#people').dataTable({
-        "processing": true,
-        "serverSide": true,
-        "drawCallback": onResize,
-        "ajax": function(data, callback) {
-            Meteor.call("getPeople", data, function(error, result) {
-                callback(result);
-            });
-        }
+    Meteor.call('getSize', function(error, result) {
+        console.log("SIZE CALL: " + JSON.stringify(result));
     });
 });
 
