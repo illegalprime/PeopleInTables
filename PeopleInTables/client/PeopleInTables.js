@@ -1,5 +1,7 @@
 Meteor.call('getHeaders', function(error, result) {
-    Session.set('headers', result);
+    for (var i in result) {
+        $('.headerRow').append('<th>' + result[i].toUpperCase() + '</th>');
+    }
 
     $('#people').dataTable({
         "processing": true,
@@ -13,14 +15,9 @@ Meteor.call('getHeaders', function(error, result) {
     });
 });
 
-Template.headerRow.helpers({
-    headers: function() {
-        return Session.get('headers');
-    }
-});
-
 var onResize = function() {
-    $('#background').height($(window).height() - $('#background').offset().top);
+    var newHeight = $(window).height() - $('#background').offset().top;
+    $('#background').height(newHeight < 0 ? 200 : newHeight);
 };
 
 $(document).ready(function() {
