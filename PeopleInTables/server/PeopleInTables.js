@@ -1,6 +1,8 @@
 var syncQuery;
 var columnsIndex;
 var size;
+var squel = Meteor.npmRequire('squel');
+
 
 Meteor.startup(function () {
     pg.connect(Meteor.settings.postgres.url, function(err, client) {
@@ -14,16 +16,17 @@ Meteor.startup(function () {
 
 Meteor.methods({
     getPeople: function(req) {
-        var query  = 'SELECT * FROM person ';
-        var order  = req.order[0].dir == 'asc' ? ' ASC ' : ' DESC ';
-        var sort   = ' ORDER BY ' + columnsIndex[req.order[0].column];
-        var offset = ' OFFSET ' + req.start;
-        var limit  = ' LIMIT '  + req.length;
-        var draw   = req.draw;
         var search = req.search.value;
-        var full   = query + sort + order + offset + limit;
 
-        var data = syncQuery(full);
+        var query = squel.select()
+            .from('person')
+            .order(columnsIndex[req.order[0].column], req.order[0].dir == 'asc')
+            .offset(req.start)
+            .limit(req.length)
+            .toString();
+        console.log(query);
+
+        var data = syncQuery(query);
         var rows = data.rows;
         var table = [];
 
