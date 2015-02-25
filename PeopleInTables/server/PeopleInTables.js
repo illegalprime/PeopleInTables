@@ -19,22 +19,32 @@ Meteor.methods({
         var search = req.search.value;
         var numSearch = parseInt(search);
         var query  = squel.select().from('person');
+        var count  = squel.select().from('person').field('COUNT(id)');
 
         if (!isNaN(numSearch)) {
-            query = query.where('id = ? OR priority = ?', numSearch, numSearch);
+            query = query.where('id = ? OR priority = ? OR phone LIKE ?',
+                numSearch, numSearch, '%' + numSearch + '%');
+            count = count.where('id = ? OR priority = ? OR phone LIKE ?',
+                numSearch, numSearch, '%' + numSearch + '%');
         }
         else {
             search = '%' + search.toLowerCase() + '%';
             query = query.where(
-                'LOWER(name) LIKE ? OR LOWER(email) LIKE ? OR LOWER(phone) LIKE ?',
+                'LOWER(name) LIKE ? OR LOWER(email) LIKE ? OR phone LIKE ?',
+                search, search, search);
+            count = count.where(
+                'LOWER(name) LIKE ? OR LOWER(email) LIKE ? OR phone LIKE ?',
                 search, search, search);
         }
+
+        // Relying on the the Database caching!
+        dataPoints = syncQuery(count.toString()).rows[0].count;
+
         query = query
             .order(columnsIndex[req.order[0].column], req.order[0].dir == 'asc')
             .offset(req.start)
             .limit(req.length)
             .toString();
-        console.log(query);
 
         var data = syncQuery(query);
         var rows = data.rows;
@@ -52,8 +62,8 @@ Meteor.methods({
             data: table,
             "draw": req.draw,
             "recordsTotal": size,
-            "recordsFiltered": size,
-        }
+            "recordsFiltered": dataPoints,
+        };
     },
     getHeaders: function() {
         var columns = syncQuery('SELECT * FROM person WHERE FALSE').fields;
