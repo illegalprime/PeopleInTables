@@ -20,7 +20,4 @@ var onResize = function() {
     $('#background').height(newHeight < 0 ? 200 : newHeight);
 };
 
-$(document).ready(function() {
-});
-
 $(window).resize(onResize);
