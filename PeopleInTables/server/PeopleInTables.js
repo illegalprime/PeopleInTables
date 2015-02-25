@@ -17,9 +17,19 @@ Meteor.startup(function () {
 Meteor.methods({
     getPeople: function(req) {
         var search = req.search.value;
+        var numSearch = parseInt(search);
+        var query  = squel.select().from('person');
 
-        var query = squel.select()
-            .from('person')
+        if (!isNaN(numSearch)) {
+            query = query.where('id = ? OR priority = ?', numSearch, numSearch);
+        }
+        else {
+            search = '%' + search.toLowerCase() + '%';
+            query = query.where(
+                'LOWER(name) LIKE ? OR LOWER(email) LIKE ? OR LOWER(phone) LIKE ?',
+                search, search, search);
+        }
+        query = query
             .order(columnsIndex[req.order[0].column], req.order[0].dir == 'asc')
             .offset(req.start)
             .limit(req.length)
